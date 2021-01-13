@@ -1,4 +1,5 @@
 // This is the data we will be using, study it but don't change anything, yet.
+import { gsap } from 'gsap';
 
 let menuItems = [
   'Students',
@@ -31,3 +32,40 @@ let menuItems = [
 
   Step 6: Use 'menuMaker' to create a menu using the 'menuItems' array, and append the returned menu to the header.
 */
+
+
+
+
+function menuMaker(arr){
+  let menu = document.createElement('div');
+  menu.classList.add('menu');
+
+  let menuOptions = document.createElement('ul');
+
+  arr.forEach(item => {
+    let option = document.createElement('li');
+    option.innerText = item;
+    menuOptions.appendChild(option);
+  })
+
+  let menuButton = document.querySelector('.menu-button');
+  let tl = gsap.timeline({ paused: true, reversed: true });
+  tl.fromTo(menu, { position: 'relative', right: '350px', display: 'none' }, { position: 'fixed', left: '0', display: 'block', duration: 1});
+  
+  function toggleTween(tween){
+    tween.reversed() ? tween.play() : tween.reverse();
+  }
+
+
+  menuButton.addEventListener('click', () => {
+    // menu.classList.toggle('menu--open');
+    toggleTween(tl);
+  })
+
+  menu.appendChild(menuOptions);
+
+  return menu;
+}
+
+let header = document.querySelector('.header');
+header.appendChild(menuMaker(menuItems));
